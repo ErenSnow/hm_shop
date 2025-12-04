@@ -27,6 +27,18 @@ class _HomeViewState extends State<HomeView> {
       id: "3",
       imgUrl: "https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg",
     ),
+    BannerItem(
+      id: "4",
+      imgUrl: "https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/1.jpg",
+    ),
+    BannerItem(
+      id: "5",
+      imgUrl: "https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/2.png",
+    ),
+    BannerItem(
+      id: "6",
+      imgUrl: "https://yjy-teach-oss.oss-cn-beijing.aliyuncs.com/meituan/3.jpg",
+    ),
   ];
 
   List<Widget> _buildSlivers() {
