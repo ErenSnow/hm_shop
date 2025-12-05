@@ -19,3 +19,10 @@ Future<List<Category>> getCategoryListApi() async {
     return Category.fromJson(item as Map<String, dynamic>);
   }).toList();
 }
+
+// 特惠推荐
+Future<RecommendSection> getRecommendSectionListApi() async {
+  return RecommendSection.fromJson(
+    await diorequest.get(HttpConstants.PREFERENCE_LIST),
+  );
+}

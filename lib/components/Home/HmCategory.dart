@@ -33,7 +33,8 @@ class _HmCategoryState extends State<HmCategory> {
                     color: Colors.grey[200],
                     shape: BoxShape.circle,
                   ),
-                  child: category.picture != null && category.picture!.isNotEmpty
+                  child:
+                      category.picture != null && category.picture!.isNotEmpty
                       ? ClipOval(
                           child: Image.network(
                             category.picture!,
@@ -55,20 +56,13 @@ class _HmCategoryState extends State<HmCategory> {
                             },
                           ),
                         )
-                      : Icon(
-                          Icons.category,
-                          color: Colors.grey[400],
-                          size: 30,
-                        ),
+                      : Icon(Icons.category, color: Colors.grey[400], size: 30),
                 ),
                 const SizedBox(height: 6),
                 // 分类名称
                 Text(
                   category.name ?? "",
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.black, fontSize: 12),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,

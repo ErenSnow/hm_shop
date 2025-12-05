@@ -17,14 +17,19 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   List<BannerItem> bannerList = [];
   List<Category> categoryList = [];
-  
+  RecommendSection recommendSection = RecommendSection(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
+
   List<Widget> _buildSlivers() {
     return [
       SliverToBoxAdapter(child: HmSlider(bannerList: bannerList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       SliverToBoxAdapter(child: HmCategory(categoryList: categoryList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
-      SliverToBoxAdapter(child: HmSuggestion()),
+      SliverToBoxAdapter(child: HmSuggestion(recommendSection: recommendSection)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       SliverToBoxAdapter(
         child: Padding(
@@ -49,6 +54,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     _getBannerList();
     _getCategoryList();
+    _getRecommendSection();
   }
 
   void _getBannerList() async {
@@ -58,6 +64,11 @@ class _HomeViewState extends State<HomeView> {
 
   void _getCategoryList() async {
     categoryList = await getCategoryListApi();
+    setState(() {});
+  }
+
+  void _getRecommendSection() async {
+    recommendSection = await getRecommendSectionListApi();
     setState(() {});
   }
 
