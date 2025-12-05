@@ -26,3 +26,18 @@ Future<RecommendSection> getRecommendSectionListApi() async {
     await diorequest.get(HttpConstants.PREFERENCE_LIST),
   );
 }
+
+// 爆款推荐
+Future<RecommendSection> getInVogueSectionListApi() async {
+  return RecommendSection.fromJson(
+    await diorequest.get(HttpConstants.IN_VOGUE_LIST),
+  );
+}
+
+// 一站全买
+Future<RecommendSection> getOneStopSectionListApi() async {
+  return RecommendSection.fromJson(
+    await diorequest.get(HttpConstants.ONE_STOP_LIST),
+  );
+}
+

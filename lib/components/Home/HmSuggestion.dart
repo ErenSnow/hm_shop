@@ -28,7 +28,7 @@ class _HmSuggestionState extends State<HmSuggestion> {
   @override
   Widget build(BuildContext context) {
     final items = _getAllGoodsItems();
-    
+
     // 如果没有商品，返回空容器
     if (items.isEmpty) {
       return const SizedBox.shrink();
@@ -40,7 +40,8 @@ class _HmSuggestionState extends State<HmSuggestion> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 标题
-          if (widget.recommendSection.title != null && widget.recommendSection.title!.isNotEmpty)
+          if (widget.recommendSection.title != null &&
+              widget.recommendSection.title!.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Text(
@@ -94,7 +95,9 @@ class _HmSuggestionState extends State<HmSuggestion> {
           // 商品图片
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(8),
+              ),
               child: goodsItem.picture != null && goodsItem.picture!.isNotEmpty
                   ? Image.network(
                       goodsItem.picture!,
@@ -146,10 +149,7 @@ class _HmSuggestionState extends State<HmSuggestion> {
                 if (goodsItem.desc != null && goodsItem.desc!.isNotEmpty)
                   Text(
                     goodsItem.desc!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

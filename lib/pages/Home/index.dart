@@ -22,6 +22,16 @@ class _HomeViewState extends State<HomeView> {
     title: "",
     subTypes: [],
   );
+  RecommendSection inVogueSection = RecommendSection(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
+  RecommendSection oneStopSection = RecommendSection(
+    id: "",
+    title: "",
+    subTypes: [],
+  );
 
   List<Widget> _buildSlivers() {
     return [
@@ -33,13 +43,27 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       SliverToBoxAdapter(
         child: Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Flex(
             direction: Axis.horizontal,
             children: [
-              Expanded(child: HmHot()),
-              SizedBox(width: 10),
-              Expanded(child: HmHot()),
+              Expanded(
+                child: HmHot(
+                  subType: inVogueSection.subTypes != null &&
+                          inVogueSection.subTypes!.isNotEmpty
+                      ? inVogueSection.subTypes![0]
+                      : null,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: HmHot(
+                  subType: oneStopSection.subTypes != null &&
+                          oneStopSection.subTypes!.isNotEmpty
+                      ? oneStopSection.subTypes![0]
+                      : null,
+                ),
+              ),
             ],
           ),
         ),
@@ -55,6 +79,8 @@ class _HomeViewState extends State<HomeView> {
     _getBannerList();
     _getCategoryList();
     _getRecommendSection();
+    _getInVogueSection();
+    _getOneStopSection();
   }
 
   void _getBannerList() async {
@@ -69,6 +95,16 @@ class _HomeViewState extends State<HomeView> {
 
   void _getRecommendSection() async {
     recommendSection = await getRecommendSectionListApi();
+    setState(() {});
+  }
+
+  void _getInVogueSection() async {
+    inVogueSection = await getInVogueSectionListApi();
+    setState(() {});
+  }
+
+  void _getOneStopSection() async {
+    oneStopSection = await getOneStopSectionListApi();
     setState(() {});
   }
 
