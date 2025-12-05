@@ -32,14 +32,16 @@ class _HomeViewState extends State<HomeView> {
     title: "",
     subTypes: [],
   );
-
+  List<GoodDetailItem> recommendList = [];
   List<Widget> _buildSlivers() {
     return [
       SliverToBoxAdapter(child: HmSlider(bannerList: bannerList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       SliverToBoxAdapter(child: HmCategory(categoryList: categoryList)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
-      SliverToBoxAdapter(child: HmSuggestion(recommendSection: recommendSection)),
+      SliverToBoxAdapter(
+        child: HmSuggestion(recommendSection: recommendSection),
+      ),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       SliverToBoxAdapter(
         child: Padding(
@@ -49,7 +51,8 @@ class _HomeViewState extends State<HomeView> {
             children: [
               Expanded(
                 child: HmHot(
-                  subType: inVogueSection.subTypes != null &&
+                  subType:
+                      inVogueSection.subTypes != null &&
                           inVogueSection.subTypes!.isNotEmpty
                       ? inVogueSection.subTypes![0]
                       : null,
@@ -58,7 +61,8 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(width: 10),
               Expanded(
                 child: HmHot(
-                  subType: oneStopSection.subTypes != null &&
+                  subType:
+                      oneStopSection.subTypes != null &&
                           oneStopSection.subTypes!.isNotEmpty
                       ? oneStopSection.subTypes![0]
                       : null,
@@ -69,7 +73,7 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
-      HmMoreList(),
+      HmMoreList(recommendList: recommendList),
     ];
   }
 
@@ -81,6 +85,7 @@ class _HomeViewState extends State<HomeView> {
     _getRecommendSection();
     _getInVogueSection();
     _getOneStopSection();
+    _getRecommendList();
   }
 
   void _getBannerList() async {
@@ -105,6 +110,11 @@ class _HomeViewState extends State<HomeView> {
 
   void _getOneStopSection() async {
     oneStopSection = await getOneStopSectionListApi();
+    setState(() {});
+  }
+
+  void _getRecommendList() async {
+    recommendList = await getRecommendListApi({"limit": 10});
     setState(() {});
   }
 
