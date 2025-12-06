@@ -5,6 +5,7 @@ import 'package:hm_shop/components/Home/HmHot.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Home/HmSlider.dart';
 import 'package:hm_shop/components/Home/HmSuggestion.dart';
+import 'package:hm_shop/utils/ToastUtils.dart';
 import 'package:hm_shop/viewmodels/home.dart';
 
 class HomeView extends StatefulWidget {
@@ -82,13 +83,11 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    _getBannerList();
-    _getCategoryList();
-    _getRecommendSection();
-    _getInVogueSection();
-    _getOneStopSection();
-    _getRecommendList();
     _registerEvent();
+    _paddingTop = 100;
+    Future.microtask(() {
+      _refreshIndicatorKey.currentState?.show();
+    });
   }
 
   void _registerEvent() {
@@ -100,36 +99,31 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  void _getBannerList() async {
+  Future<void> _getBannerList() async {
     bannerList = await getBannerListApi();
-    setState(() {});
   }
 
-  void _getCategoryList() async {
+  Future<void> _getCategoryList() async {
     categoryList = await getCategoryListApi();
-    setState(() {});
   }
 
-  void _getRecommendSection() async {
+  Future<void> _getRecommendSection() async {
     recommendSection = await getRecommendSectionListApi();
-    setState(() {});
   }
 
-  void _getInVogueSection() async {
+  Future<void> _getInVogueSection() async {
     inVogueSection = await getInVogueSectionListApi();
-    setState(() {});
   }
 
-  void _getOneStopSection() async {
+  Future<void> _getOneStopSection() async {
     oneStopSection = await getOneStopSectionListApi();
-    setState(() {});
   }
 
   int _page = 1; // 当前页码
   bool _isLoading = false; // 是否正在加载
   bool _hasMore = true; // 是否有更多数据
 
-  void _getRecommendList() async {
+  Future<void> _getRecommendList() async {
     if (_isLoading || !_hasMore) return;
     _isLoading = true;
     int limit = _page * 10;
@@ -143,11 +137,38 @@ class _HomeViewState extends State<HomeView> {
     _page++;
   }
 
+  Future<void> _refresh() async {
+    _page = 1;
+    _isLoading = false;
+    _hasMore = true;
+    await _getBannerList();
+    await _getCategoryList();
+    await _getRecommendSection();
+    await _getInVogueSection();
+    await _getOneStopSection();
+    await _getRecommendList();
+    ToastUtils.show(context, "刷新成功");
+    _paddingTop = 0;
+    setState(() {});
+  }
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey();
+
+  double _paddingTop = 0;
+
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: _buildSlivers(),
-      controller: _scrollController,
+    return RefreshIndicator(
+      key: _refreshIndicatorKey,
+      onRefresh: _refresh,
+      child: AnimatedContainer(
+        padding: EdgeInsets.only(top: _paddingTop),
+        duration: Duration(milliseconds: 300),
+        child: CustomScrollView(
+          slivers: _buildSlivers(),
+          controller: _scrollController,
+        ),
+      ),
     );
   }
 
