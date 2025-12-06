@@ -18,7 +18,8 @@ class _HmSuggestionState extends State<HmSuggestion> {
     if (widget.recommendSection.subTypes != null) {
       for (var subType in widget.recommendSection.subTypes!) {
         if (subType.goodsItems?.items != null) {
-          allItems.addAll(subType.goodsItems!.items!);
+          final items = subType.goodsItems!.items!.sublist(0, 2);
+          allItems.addAll(items);
         }
       }
     }

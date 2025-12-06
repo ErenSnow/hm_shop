@@ -33,6 +33,8 @@ class _HomeViewState extends State<HomeView> {
     subTypes: [],
   );
   List<GoodDetailItem> recommendList = [];
+  final ScrollController _scrollController = ScrollController();
+  
   List<Widget> _buildSlivers() {
     return [
       SliverToBoxAdapter(child: HmSlider(bannerList: bannerList)),
@@ -86,6 +88,16 @@ class _HomeViewState extends State<HomeView> {
     _getInVogueSection();
     _getOneStopSection();
     _getRecommendList();
+    _registerEvent();
+  }
+
+  void _registerEvent() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          (_scrollController.position.maxScrollExtent - 50)) {
+        _getRecommendList();
+      }
+    });
   }
 
   void _getBannerList() async {
@@ -113,13 +125,35 @@ class _HomeViewState extends State<HomeView> {
     setState(() {});
   }
 
+  int _page = 1; // 当前页码
+  bool _isLoading = false; // 是否正在加载
+  bool _hasMore = true; // 是否有更多数据
+
   void _getRecommendList() async {
-    recommendList = await getRecommendListApi({"limit": 10});
+    if (_isLoading || !_hasMore) return;
+    _isLoading = true;
+    int limit = _page * 10;
+    recommendList = await getRecommendListApi({"limit": limit});
+    _isLoading = false;
     setState(() {});
+    if (recommendList.length < limit) {
+      _hasMore = false;
+      return;
+    }
+    _page++;
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: _buildSlivers());
+    return CustomScrollView(
+      slivers: _buildSlivers(),
+      controller: _scrollController,
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
